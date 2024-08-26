@@ -1,6 +1,7 @@
 import "../styles/Register.scss";
 import Upload from "../assets/uploadPhoto.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,33 @@ const RegisterPage = () => {
     confirmPassword: "",
     profileImage: null,
   });
+  const [passwordMatch, setPasswordMatch] = useState(true);
+  const navigate = useNavigate()
+  useEffect(() => {
+    setPasswordMatch(formData.password === formData.confirmPassword || formData.confirmPassword === "")
+  })
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const register_form = new FormData()
+
+      for (var key in formData) {
+        register_form.append(key, formData[key])
+      }
+
+      const response = await fetch("http://localhost:3001/auth/register", {
+        method: "POST",
+        body: register_form
+      })
+
+      if (response.ok) {
+        navigate("/login")
+      }
+    } catch (err) {
+      console.log("Registration failed", err.message)
+    }
+  }
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -23,7 +51,7 @@ const RegisterPage = () => {
   return (
     <div className="register">
       <div className="register_content">
-        <form className="register_content_form">
+        <form onSubmit={handleSubmit} className="register_content_form">
           <h1 style={{ color: "white" }}>Sign up</h1>
           <input
             onChange={handleChange}
@@ -65,6 +93,9 @@ const RegisterPage = () => {
             name="confirmPassword"
             required
           />
+           {!passwordMatch && (
+            <p style={{ color: "red" }}>Passwords are not matched!</p>
+          )}
           <input
             onChange={handleChange}
             type="file"
@@ -85,7 +116,7 @@ const RegisterPage = () => {
               style={{ maxWidth: "80px" }}
             />
           )}
-          <button type="submit">Register</button>
+          <button  disabled={!passwordMatch} type="submit">Register</button>
         </form>
         <a href="">Already have an account? Log in Here</a>
       </div>
