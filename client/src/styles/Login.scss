@@ -1,0 +1,76 @@
+@import "./variables.scss";
+@import "./breakpoints.scss";
+
+.login {
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../assets/login_2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    &_content {
+        display: flex;
+        flex-direction: column;
+        background-color: rgba(0, 0, 0, 0.8);
+        width: 40%;
+        padding: 40px;
+        gap: 15px;
+        border-radius: 20px;
+
+        @include lg {
+            width: 60%;
+        }
+        @include mm {
+            width: 80%;
+        }
+
+        &_form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+
+            input {
+                width: 100%;
+                border: none;
+                outline: none;
+                background-color: transparent;
+                color: white;
+                text-align: left;
+                padding: 7px 5px;
+                border-bottom: 2px solid white;
+                margin-bottom: 8px;
+                margin-top: 10px;
+
+                input:not(:placeholder-shown):focus {
+                    background: transparent; /* or background: none; */
+                }
+                &::placeholder {
+                    color: white;
+                }
+            }
+            button {
+                margin-top: 5px;
+                @include buttonStyle;
+                width: 50%;
+                &:hover {
+                    box-shadow: 0 0 10px 3px rgba(255, 255, 255);
+                }
+            }
+        }
+        a {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 17px;
+            margin-top: 5px;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
