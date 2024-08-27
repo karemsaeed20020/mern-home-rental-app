@@ -35,16 +35,25 @@ const signup = createAsync(async (req, res) => {
 });
 const login = createAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  if (!email || !password) {
+    return res.status(400).json({ message: "Please provide both email and password" });
+  }
+
+  const user = await User.findOne({ email }).select('+password');
+
   if (!user) {
     return res.status(409).json({ message: "User does not exist" });
   }
+
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return res.status(400).json({ message: "Invalid Credientials" });
+    return res.status(400).json({ message: "Invalid Credentials" });
   }
+
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-  delete user.password;
+
+  user.password = undefined;
+
   res.status(200).json({
     status: "success",
     token,
@@ -53,6 +62,7 @@ const login = createAsync(async (req, res, next) => {
     },
   });
 });
+
 module.exports = {
   signup,
   login,
