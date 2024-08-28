@@ -4,7 +4,6 @@ $lightgrey: #F7F8F8;
 $grey: #bdb9b9;
 $darkgrey: #969393;
 
-
 @mixin shadow {
   box-shadow: 0 3px 10px 2px rgba(0, 0, 0, 0.2);
 }
@@ -19,6 +18,13 @@ $darkgrey: #969393;
   transition: 0.3s ease;
   color: white;
   border-radius: 10px;
+}
+:root {
+  --pinkred: #F8395A;
+  --blue: #24355A;
+  --lightgrey: #F7F8F8;
+  --grey: #bdb9b9;
+  --darkgrey: #969393;
 }
 
 :export {
