@@ -4,11 +4,17 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 const authRoutes = require('./routes/auth.js');
+const path = require("path");
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.use('/auth', authRoutes);
 
